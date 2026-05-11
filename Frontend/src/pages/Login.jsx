@@ -3,6 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 
 import toast from "react-hot-toast";
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 import {
     LogIn,
@@ -49,7 +50,7 @@ export default function Login() {
 
             const response =
                 await axios.post(
-                    "http://localhost:8084/api/auth/login",
+                    `${API_BASE_URL}/api/auth/login`,
                     formData
                 );
 
