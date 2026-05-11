@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/monitoring")
 @RequiredArgsConstructor
-@CrossOrigin("*")
+//@CrossOrigin("*")
 public class MonitoringController {
 
     private final DeliveryRepository deliveryRepository;
