@@ -1,0 +1,61 @@
+import {
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    Tooltip,
+    ResponsiveContainer,
+    CartesianGrid,
+} from "recharts";
+
+export default function DeliveryTrendChart({
+                                               deliveries,
+                                           }) {
+
+    const chartData = deliveries.map(
+        (d, index) => ({
+            name: `D${index + 1}`,
+            distance: d.distanceKm,
+        })
+    );
+
+    return (
+
+        <div className="rounded-[36px] bg-white p-8 shadow-xl">
+
+            <h2 className="text-3xl font-black text-slate-900">
+
+                Delivery Distance Trend
+
+            </h2>
+
+            <div className="mt-8 h-[320px]">
+
+                <ResponsiveContainer>
+
+                    <LineChart data={chartData}>
+
+                        <CartesianGrid strokeDasharray="3 3" />
+
+                        <XAxis dataKey="name" />
+
+                        <YAxis />
+
+                        <Tooltip />
+
+                        <Line
+                            type="monotone"
+                            dataKey="distance"
+                            stroke="#f97316"
+                            strokeWidth={4}
+                        />
+
+                    </LineChart>
+
+                </ResponsiveContainer>
+
+            </div>
+
+        </div>
+    );
+}

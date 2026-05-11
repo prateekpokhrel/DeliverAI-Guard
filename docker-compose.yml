@@ -1,0 +1,41 @@
+services:
+
+  postgres:
+    image: postgres:18
+    container_name: deliverai-postgres
+
+    environment:
+      POSTGRES_DB: deliverai
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: kiit
+
+    ports:
+      - "5433:5432"
+
+  backend:
+    build: ./deliverai-backend
+    container_name: deliverai-backend
+
+    ports:
+      - "8084:8084"
+
+    depends_on:
+      - postgres
+      - ai-service
+
+  ai-service:
+    build: ./AI_Layer
+    container_name: deliverai-ai
+
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build: ./Frontend
+    container_name: deliverai-frontend
+
+    ports:
+      - "5173:5173"
+
+    depends_on:
+      - backend
