@@ -15,23 +15,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // --- THE CRUCIAL LINE ---
-                // This tells Spring Security to find your CorsFilter and run it first
+                // 1. THIS IS THE MAGIC LINE FOR CORS
+                // Tells Spring Security to use your CorsFilter first before blocking preflight requests
                 .cors(Customizer.withDefaults())
 
-                // Disable CSRF for REST APIs
+                // 2. Disable CSRF for REST APIs
                 .csrf(AbstractHttpConfigurer::disable)
 
+                // 3. Authorization rules
                 .authorizeHttpRequests(auth -> auth
-                        // Allow public access to your predict endpoint (adjust if you have specific paths)
+                        // Allow public access from your Vercel frontend to the delivery endpoints
                         .requestMatchers("/api/delivery/**").permitAll()
 
-                        // Secure everything else (if you are using JWT)
+                        // Secure everything else
                         .anyRequest().authenticated()
                 );
-
-        // Note: If you add your JwtService filter later, add it using:
-        // .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
