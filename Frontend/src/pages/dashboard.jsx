@@ -15,7 +15,7 @@ import AlertCenter from "../components/alerts/AlertCenter";
 import KPIStatCard from "../components/cards/KPIStatCard";
 import RiskPieChart from "../components/charts/RiskPieChart";
 import DeliveryTrendChart from "../components/charts/DeliveryTrendChart";
-
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 import {
     AlertTriangle,
     BrainCircuit,
@@ -95,7 +95,9 @@ export default function Dashboard() {
 
     const fetchDeliveries = async () => {
         try {
-            const response = await axios.get("http://localhost:8084/api/monitoring/all");
+            const response = await axios.get(
+                `${API_BASE_URL}/api/monitoring/all`
+            );
             setDeliveries(response.data);
 
             setTimeout(() => {
@@ -131,7 +133,10 @@ export default function Dashboard() {
             setLoading(true);
             toast.loading("AI analyzing delivery...", { id: "prediction" });
 
-            const response = await axios.post("http://localhost:8084/api/delivery/predict", formData);
+            const response = await axios.post(
+                `${API_BASE_URL}/api/delivery/predict`,
+                formData
+            );
 
             const risk =
                 response.data.predictedDeliveryRisk ||

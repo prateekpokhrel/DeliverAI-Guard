@@ -3,6 +3,28 @@ import { Client }
 
 let stompClient = null;
 
+// =====================================
+// BACKEND URL FROM .env
+// =====================================
+
+const API_BASE_URL =
+    import.meta.env.VITE_API_URL;
+
+// Convert:
+// https://abc.up.railway.app
+// ->
+// wss://abc.up.railway.app
+
+const SOCKET_URL =
+    API_BASE_URL.replace(
+        "https://",
+        "wss://"
+    );
+
+// =====================================
+// CONNECT WEBSOCKET
+// =====================================
+
 export const connectWebSocket =
     (onMessageReceived) => {
 
@@ -10,7 +32,7 @@ export const connectWebSocket =
             new Client({
 
                 brokerURL:
-                    "ws://localhost:8084/ws",
+                    `${SOCKET_URL}/ws`,
 
                 reconnectDelay: 5000,
 
@@ -22,6 +44,7 @@ export const connectWebSocket =
 
                     stompClient.subscribe(
                         "/topic/deliveries",
+
                         (message) => {
 
                             const data =
@@ -39,7 +62,16 @@ export const connectWebSocket =
                 onStompError: (frame) => {
 
                     console.error(
+                        "STOMP ERROR:",
                         frame
+                    );
+                },
+
+                onWebSocketError: (error) => {
+
+                    console.error(
+                        "WebSocket Error:",
+                        error
                     );
                 },
             });
@@ -47,11 +79,19 @@ export const connectWebSocket =
         stompClient.activate();
     };
 
+// =====================================
+// DISCONNECT
+// =====================================
+
 export const disconnectWebSocket =
     () => {
 
         if (stompClient) {
 
             stompClient.deactivate();
+
+            console.log(
+                "WebSocket Disconnected"
+            );
         }
     };
