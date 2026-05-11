@@ -9,7 +9,7 @@ import joblib
 # LOAD DATASET
 # =========================================================
 
-df = pd.read_csv("AI_Layer/amazon_delivery_processed.csv")
+df = pd.read_csv("amazon_delivery_processed.csv")
 
 print("Dataset Loaded Successfully!")
 
@@ -133,10 +133,10 @@ print(confusion_matrix(y_test, y_pred))
 # SAVE MODEL
 # =========================================================
 
-joblib.dump(model, "AI_Layer/delivery_risk_model.pkl")
-joblib.dump(label_encoders, "AI_Layer/label_encoders.pkl")
+joblib.dump(model, "delivery_risk_model.pkl")
+joblib.dump(label_encoders, "label_encoders.pkl")
 
-joblib.dump(target_encoder, "AI_Layer/target_encoder.pkl")
+joblib.dump(target_encoder, "target_encoder.pkl")
 
 print("\nModel Saved Successfully!")
 print("Saved as: delivery_risk_model.pkl")

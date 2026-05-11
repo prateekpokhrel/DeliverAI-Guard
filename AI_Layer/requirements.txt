@@ -10,3 +10,5 @@ seaborn
 xgboost
 lightgbm
 shap
+numba
+scipy
