@@ -1,97 +1,49 @@
-import { Client }
-    from "@stomp/stompjs";
+import { Client } from "@stomp/stompjs";
+
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
+const WS_URL =
+    API_BASE_URL
+        .replace("https://", "wss://")
+        .replace("http://", "ws://");
 
 let stompClient = null;
 
-// =====================================
-// BACKEND URL FROM .env
-// =====================================
+export const connectWebSocket = (onMessageReceived) => {
 
-const API_BASE_URL =
-    import.meta.env.VITE_API_URL;
+    stompClient = new Client({
 
-// Convert:
-// https://abc.up.railway.app
-// ->
-// wss://abc.up.railway.app
+        brokerURL: `${WS_URL}/ws`,
 
-const SOCKET_URL =
-    API_BASE_URL.replace(
-        "https://",
-        "wss://"
-    );
+        reconnectDelay: 5000,
 
-// =====================================
-// CONNECT WEBSOCKET
-// =====================================
+        onConnect: () => {
 
-export const connectWebSocket =
-    (onMessageReceived) => {
+            console.log("WebSocket Connected");
 
-        stompClient =
-            new Client({
+            stompClient.subscribe(
+                "/topic/deliveries",
+                (message) => {
 
-                brokerURL:
-                    `${SOCKET_URL}/ws`,
+                    const data =
+                        JSON.parse(message.body);
 
-                reconnectDelay: 5000,
-
-                onConnect: () => {
-
-                    console.log(
-                        "WebSocket Connected"
-                    );
-
-                    stompClient.subscribe(
-                        "/topic/deliveries",
-
-                        (message) => {
-
-                            const data =
-                                JSON.parse(
-                                    message.body
-                                );
-
-                            onMessageReceived(
-                                data
-                            );
-                        }
-                    );
-                },
-
-                onStompError: (frame) => {
-
-                    console.error(
-                        "STOMP ERROR:",
-                        frame
-                    );
-                },
-
-                onWebSocketError: (error) => {
-
-                    console.error(
-                        "WebSocket Error:",
-                        error
-                    );
-                },
-            });
-
-        stompClient.activate();
-    };
-
-// =====================================
-// DISCONNECT
-// =====================================
-
-export const disconnectWebSocket =
-    () => {
-
-        if (stompClient) {
-
-            stompClient.deactivate();
-
-            console.log(
-                "WebSocket Disconnected"
+                    onMessageReceived(data);
+                }
             );
-        }
-    };
+        },
+
+        onStompError: (frame) => {
+            console.error(frame);
+        },
+    });
+
+    stompClient.activate();
+};
+
+export const disconnectWebSocket = () => {
+
+    if (stompClient) {
+        stompClient.deactivate();
+    }
+};
