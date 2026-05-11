@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 //@CrossOrigin("*")
 
+
 public class AuthController {
 
     private final UserRepository userRepository;
@@ -75,6 +76,10 @@ public class AuthController {
         return ResponseEntity.ok(
                 "User Registered Successfully"
         );
+    }
+    @GetMapping("/test")
+    public String test() {
+        return "Backend Working";
     }
 
     // =========================================
