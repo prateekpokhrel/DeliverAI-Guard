@@ -4,10 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f23b64b6-1c7d-4fe4-9d2b-4f7c795837ae" name="Changes" comment="error fix">
+    <list default="true" id="f23b64b6-1c7d-4fe4-9d2b-4f7c795837ae" name="Changes" comment="deployment error fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/src/pages/dashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/src/pages/dashboard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Frontend/src/services/websocketService.js" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/src/services/websocketService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deliverai-backend/src/main/java/com/deliverai/deliverai_backend/config/CorsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/deliverai-backend/src/main/java/com/deliverai/deliverai_backend/config/CorsConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deliverai-backend/src/main/java/com/deliverai/deliverai_backend/config/WebSocketConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/deliverai-backend/src/main/java/com/deliverai/deliverai_backend/config/WebSocketConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -356,7 +359,15 @@
       <option name="project" value="LOCAL" />
       <updated>1778772425191</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="deployment error fix">
+      <option name="closed" value="true" />
+      <created>1778773075982</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1778773075982</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -374,6 +385,7 @@
     <MESSAGE value="backend fix" />
     <MESSAGE value="errorfix" />
     <MESSAGE value="error fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="error fix" />
+    <MESSAGE value="deployment error fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="deployment error fix" />
   </component>
 </project>

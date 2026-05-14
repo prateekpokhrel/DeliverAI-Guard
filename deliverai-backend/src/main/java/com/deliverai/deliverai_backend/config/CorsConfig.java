@@ -14,32 +14,75 @@ public class CorsConfig {
 
     @Bean
     public CorsFilter corsFilter() {
-        CorsConfiguration config = new CorsConfiguration();
 
-        // 1. Allow credentials (cookies, authorization headers)
+        CorsConfiguration config =
+                new CorsConfiguration();
+
+        // =====================================
+        // ALLOW CREDENTIALS
+        // =====================================
+
         config.setAllowCredentials(true);
 
-        // 2. Exact frontend URL (No trailing slash)
+        // =====================================
+        // ALLOW FRONTEND DOMAINS
+        // =====================================
+
         config.setAllowedOriginPatterns(List.of(
-                "https://*.up.railway.app"
+
+                // Railway frontend
+                "https://*.up.railway.app",
+
+                // Vercel frontend
+                "https://*.vercel.app",
+
+                // Localhost development
+                "http://localhost:5173",
+                "http://localhost:3000"
         ));
 
-        // 3. Explicitly list allowed headers (Wildcards can sometimes fail with Spring Security)
+        // =====================================
+        // ALLOW HEADERS
+        // =====================================
+
         config.setAllowedHeaders(Arrays.asList(
-                "Origin", "Content-Type", "Accept", "Authorization", "X-Requested-With"
+                "*"
         ));
 
-        // 4. Explicitly allow methods, especially OPTIONS for preflight
+        // =====================================
+        // ALLOW METHODS
+        // =====================================
+
         config.setAllowedMethods(Arrays.asList(
-                "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"
+                "GET",
+                "POST",
+                "PUT",
+                "DELETE",
+                "OPTIONS",
+                "PATCH"
         ));
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        // Apply to all API endpoints
-        source.registerCorsConfiguration("/**", config);
+        // =====================================
+        // EXPOSE HEADERS
+        // =====================================
+
+        config.setExposedHeaders(Arrays.asList(
+                "Authorization",
+                "Content-Type"
+        ));
+
+        // =====================================
+        // APPLY CONFIG
+        // =====================================
+
+        UrlBasedCorsConfigurationSource source =
+                new UrlBasedCorsConfigurationSource();
+
+        source.registerCorsConfiguration(
+                "/**",
+                config
+        );
 
         return new CorsFilter(source);
     }
 }
-
-//https://deliver-ai-guard-frontend.vercel.app/

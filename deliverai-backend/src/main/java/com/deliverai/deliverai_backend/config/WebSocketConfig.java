@@ -1,14 +1,13 @@
 package com.deliverai.deliverai_backend.config;
 
 import org.springframework.context.annotation.Configuration;
-
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-
-import org.springframework.web.socket.config.annotation.*;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
 @Configuration
 @EnableWebSocketMessageBroker
-
 public class WebSocketConfig
         implements WebSocketMessageBrokerConfigurer {
 
@@ -17,13 +16,9 @@ public class WebSocketConfig
             MessageBrokerRegistry config
     ) {
 
-        config.enableSimpleBroker(
-                "/topic"
-        );
+        config.enableSimpleBroker("/topic");
 
-        config.setApplicationDestinationPrefixes(
-                "/app"
-        );
+        config.setApplicationDestinationPrefixes("/app");
     }
 
     @Override
@@ -31,11 +26,16 @@ public class WebSocketConfig
             StompEndpointRegistry registry
     ) {
 
-        registry
+        registry.addEndpoint("/ws")
 
-                .addEndpoint("/ws")
+                // Railway + Vercel
+                .setAllowedOriginPatterns(
+                        "https://*.up.railway.app",
+                        "https://*.vercel.app",
+                        "http://localhost:5173",
+                        "http://localhost:3000"
+                )
 
-                .setAllowedOriginPatterns("*");
-
+                .withSockJS();
     }
 }

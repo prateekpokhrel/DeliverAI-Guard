@@ -22,6 +22,7 @@
     "react-loading-skeleton": "^3.5.0",
     "react-router-dom": "^7.15.0",
     "recharts": "^3.8.1",
+    "sockjs-client": "^1.6.1",
     "stompjs": "^2.3.3"
   },
   "devDependencies": {
