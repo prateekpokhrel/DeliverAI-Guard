@@ -31,7 +31,7 @@ export default function DeliveryTrendChart({
 
             <div className="mt-8 h-[320px]">
 
-                <ResponsiveContainer>
+                <ResponsiveContainer width="100%" height="100%" minWidth={0}>
 
                     <LineChart data={chartData}>
 
