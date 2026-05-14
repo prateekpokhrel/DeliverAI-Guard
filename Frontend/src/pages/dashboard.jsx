@@ -150,6 +150,9 @@ export default function Dashboard() {
             // SET EXPLAINABILITY STATE
             setExplainability(response.data.Explainability || null);
 
+            // REFRESH DELIVERY DATA
+            await fetchDeliveries();
+
             toast.success("Prediction completed", { id: "prediction" });
         } catch (error) {
             console.log(error);
