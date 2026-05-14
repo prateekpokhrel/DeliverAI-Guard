@@ -42,7 +42,7 @@ export default function RiskPieChart({
 
     return (
 
-        <div className="rounded-[36px] bg-white p-8 shadow-xl">
+        <div className="min-w-0 rounded-[36px] bg-white p-8 shadow-xl">
 
             <h2 className="text-3xl font-black text-slate-900">
 
