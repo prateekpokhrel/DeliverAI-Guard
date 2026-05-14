@@ -21,8 +21,7 @@ public class CorsConfig {
 
         // 2. Exact frontend URL (No trailing slash)
         config.setAllowedOriginPatterns(List.of(
-                "https://deliver-ai-guard-frontend.vercel.app",
-                "https://*.vercel.app"
+                "https://*.up.railway.app"
         ));
 
         // 3. Explicitly list allowed headers (Wildcards can sometimes fail with Spring Security)
