@@ -4,11 +4,6 @@ import SockJS from "sockjs-client";
 const API_BASE_URL =
     import.meta.env.VITE_API_URL;
 
-console.log(
-    "API_BASE_URL:",
-    API_BASE_URL
-);
-
 let stompClient = null;
 
 export const connectWebSocket = (onMessageReceived) => {
@@ -22,11 +17,9 @@ export const connectWebSocket = (onMessageReceived) => {
         reconnectDelay: 5000,
         heartbeatIncoming: 4000,
         heartbeatOutgoing: 4000,
-        debug: (str) => console.log("STOMP:", str),
+        // no debug output in production
 
         onConnect: () => {
-            console.log("WebSocket Connected");
-
             // use the client reference captured by closure to avoid race conditions
             client.subscribe(
                 "/topic/deliveries",
@@ -39,7 +32,9 @@ export const connectWebSocket = (onMessageReceived) => {
 
         onStompError: (frame) => console.error("STOMP Error:", frame),
         onWebSocketError: (error) => console.error("WebSocket Error:", error),
-        onDisconnect: () => console.log("WebSocket Disconnected")
+        onDisconnect: () => {
+            // connection closed silently
+        }
     });
 
     stompClient = client;
@@ -53,9 +48,5 @@ export const disconnectWebSocket = async () => {
         await stompClient.deactivate();
 
         stompClient = null;
-
-        console.log(
-            "WebSocket Disconnected"
-        );
     }
 };

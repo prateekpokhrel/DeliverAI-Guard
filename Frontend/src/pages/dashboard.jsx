@@ -124,8 +124,6 @@ export default function Dashboard() {
                 `${API_BASE_URL}/api/monitoring/all`
             );
 
-            console.log("Deliveries API Response:", response.data);
-
             let deliveriesData = [];
 
             // Handle different backend response formats
@@ -272,11 +270,6 @@ export default function Dashboard() {
             const response = await axios.post(
                 `${API_BASE_URL}/api/delivery/predict`,
                 formData
-            );
-
-            console.log(
-                "Prediction Response:",
-                response.data
             );
 
             const risk =
