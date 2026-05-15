@@ -4,6 +4,11 @@ import SockJS from "sockjs-client";
 const API_BASE_URL =
     import.meta.env.VITE_API_URL;
 
+console.log(
+    "API_BASE_URL:",
+    API_BASE_URL
+);
+
 let stompClient = null;
 
 export const connectWebSocket = (
@@ -22,6 +27,9 @@ export const connectWebSocket = (
             ),
 
         reconnectDelay: 5000,
+
+        heartbeatIncoming: 4000,
+        heartbeatOutgoing: 4000,
 
         debug: (str) => {
             console.log("STOMP:", str);
@@ -60,6 +68,13 @@ export const connectWebSocket = (
                 error
             );
         },
+
+        onDisconnect: () => {
+
+            console.log(
+                "WebSocket Disconnected"
+            );
+        }
     });
 
     stompClient.activate();

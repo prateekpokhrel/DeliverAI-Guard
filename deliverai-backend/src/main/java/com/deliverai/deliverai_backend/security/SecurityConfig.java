@@ -23,19 +23,11 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    // =====================================
-    // PASSWORD ENCODER
-    // =====================================
-
     @Bean
     public PasswordEncoder passwordEncoder() {
 
         return new BCryptPasswordEncoder();
     }
-
-    // =====================================
-    // SECURITY FILTER
-    // =====================================
 
     @Bean
     public SecurityFilterChain filterChain(
@@ -50,34 +42,26 @@ public class SecurityConfig {
                 // Disable CSRF
                 .csrf(AbstractHttpConfigurer::disable)
 
-                // Authorization Rules
+                // Authorization
                 .authorizeHttpRequests(auth -> auth
 
-                        // Allow OPTIONS requests
+                        // Allow preflight requests
                         .requestMatchers(
                                 HttpMethod.OPTIONS,
                                 "/**"
                         ).permitAll()
 
                         // Public APIs
-                        .requestMatchers(
-                                "/api/auth/**"
-                        ).permitAll()
+                        .requestMatchers("/api/**")
+                        .permitAll()
 
-                        .requestMatchers(
-                                "/api/delivery/**"
-                        ).permitAll()
+                        // WebSocket
+                        .requestMatchers("/ws/**")
+                        .permitAll()
 
-                        .requestMatchers(
-                                "/api/monitoring/**"
-                        ).permitAll()
-
-                        .requestMatchers(
-                                "/ws/**"
-                        ).permitAll()
-
-                        // Everything else
-                        .anyRequest().authenticated()
+                        // EVERYTHING ALLOWED
+                        .anyRequest()
+                        .permitAll()
                 );
 
         return http.build();

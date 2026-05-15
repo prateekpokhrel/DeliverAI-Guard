@@ -45,22 +45,12 @@ public class CorsConfig {
         // ALLOW HEADERS
         // =====================================
 
-        config.setAllowedHeaders(Arrays.asList(
-                "*"
-        ));
-
+        config.addAllowedHeader("*");
         // =====================================
         // ALLOW METHODS
         // =====================================
 
-        config.setAllowedMethods(Arrays.asList(
-                "GET",
-                "POST",
-                "PUT",
-                "DELETE",
-                "OPTIONS",
-                "PATCH"
-        ));
+        config.addAllowedMethod("*");
 
         // =====================================
         // EXPOSE HEADERS
