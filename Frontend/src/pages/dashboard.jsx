@@ -375,6 +375,87 @@ export default function Dashboard() {
                         logistics monitoring, traffic analysis, and smart prevention recommendations.
                     </p>
 
+                    <section className="mt-6 rounded-[20px] bg-gradient-to-br from-[#071024] to-[#0b1624] p-5 text-white shadow-lg border border-slate-800">
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <Zap size={18} className="text-orange-400" />
+                                <h3 className="text-lg font-semibold">AI Parameters</h3>
+                                <span className="text-sm text-slate-400">Edit inputs before running prediction</span>
+                            </div>
+                        </div>
+
+                        <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                            <div>
+                                <label className="block text-xs text-slate-300">Agent Age</label>
+                                <input name="Agent_Age" type="number" value={formData.Agent_Age} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black" />
+                            </div>
+
+                            <div>
+                                <label className="block text-xs text-slate-300">Agent Rating</label>
+                                <input name="Agent_Rating" type="number" step="0.1" value={formData.Agent_Rating} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black" />
+                            </div>
+
+                            <div>
+                                <label className="block text-xs text-slate-300">Weather</label>
+                                <select name="Weather" value={formData.Weather} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black">
+                                    <option>Sunny</option>
+                                    <option>Rainy</option>
+                                    <option>Fog</option>
+                                    <option>Sandstorms</option>
+                                    <option>Windy</option>
+                                    <option>Cloudy</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="block text-xs text-slate-300">Traffic</label>
+                                <select name="Traffic" value={formData.Traffic} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black">
+                                    <option>Low</option>
+                                    <option>Medium</option>
+                                    <option>High</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="block text-xs text-slate-300">Vehicle</label>
+                                <input name="Vehicle" value={formData.Vehicle} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black" />
+                            </div>
+
+                            <div>
+                                <label className="block text-xs text-slate-300">Category</label>
+                                <input name="Category" value={formData.Category} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black" />
+                            </div>
+
+                            <div>
+                                <label className="block text-xs text-slate-300">Area</label>
+                                <input name="Area" value={formData.Area} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black" />
+                            </div>
+
+                            <div>
+                                <label className="block text-xs text-slate-300">Distance (km)</label>
+                                <input name="Distance_km" type="number" step="0.1" value={formData.Distance_km} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black" />
+                            </div>
+
+                            <div>
+                                <label className="block text-xs text-slate-300">Pickup Delay (mins)</label>
+                                <input name="Pickup_Delay_Minutes" type="number" value={formData.Pickup_Delay_Minutes} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black" />
+                            </div>
+
+                            <div>
+                                <label className="block text-xs text-slate-300">Rush Hour</label>
+                                <select name="Rush_Hour" value={formData.Rush_Hour} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black">
+                                    <option value={0}>No</option>
+                                    <option value={1}>Yes</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="block text-xs text-slate-300">Order Hour</label>
+                                <input name="Order_Hour" type="number" value={formData.Order_Hour} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black" />
+                            </div>
+                        </div>
+                    </section>
+
                     <button
                         onClick={predictRisk}
                         disabled={loading}

@@ -11,72 +11,38 @@ console.log(
 
 let stompClient = null;
 
-export const connectWebSocket = (
-    onMessageReceived
-) => {
+export const connectWebSocket = (onMessageReceived) => {
 
     if (stompClient?.connected) {
         return;
     }
 
-    stompClient = new Client({
-
-        webSocketFactory: () =>
-            new SockJS(
-                `${API_BASE_URL}/ws`
-            ),
-
+    const client = new Client({
+        webSocketFactory: () => new SockJS(`${API_BASE_URL}/ws`),
         reconnectDelay: 5000,
-
         heartbeatIncoming: 4000,
         heartbeatOutgoing: 4000,
-
-        debug: (str) => {
-            console.log("STOMP:", str);
-        },
+        debug: (str) => console.log("STOMP:", str),
 
         onConnect: () => {
+            console.log("WebSocket Connected");
 
-            console.log(
-                "WebSocket Connected"
-            );
-
-            stompClient.subscribe(
+            // use the client reference captured by closure to avoid race conditions
+            client.subscribe(
                 "/topic/deliveries",
                 (message) => {
-
-                    const data =
-                        JSON.parse(message.body);
-
+                    const data = JSON.parse(message.body);
                     onMessageReceived(data);
                 }
             );
         },
 
-        onStompError: (frame) => {
-
-            console.error(
-                "STOMP Error:",
-                frame
-            );
-        },
-
-        onWebSocketError: (error) => {
-
-            console.error(
-                "WebSocket Error:",
-                error
-            );
-        },
-
-        onDisconnect: () => {
-
-            console.log(
-                "WebSocket Disconnected"
-            );
-        }
+        onStompError: (frame) => console.error("STOMP Error:", frame),
+        onWebSocketError: (error) => console.error("WebSocket Error:", error),
+        onDisconnect: () => console.log("WebSocket Disconnected")
     });
 
+    stompClient = client;
     stompClient.activate();
 };
 
