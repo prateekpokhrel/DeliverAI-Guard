@@ -8,8 +8,9 @@ import {
 } from "recharts";
 
 const COLORS = [
-    "#22c55e",
+    // MEDIUM, LOW, HIGH (match legend order and site accent)
     "#f97316",
+    "#22c55e",
     "#ef4444",
 ];
 
@@ -44,30 +45,9 @@ export default function RiskPieChart({
     // =====================================================
 
     const data = [
-
-        {
-            name: "LOW",
-            value: normalizedDeliveries.filter(
-                (d) =>
-                    d.predictedRisk === "LOW"
-            ).length,
-        },
-
-        {
-            name: "MEDIUM",
-            value: normalizedDeliveries.filter(
-                (d) =>
-                    d.predictedRisk === "MEDIUM"
-            ).length,
-        },
-
-        {
-            name: "HIGH",
-            value: normalizedDeliveries.filter(
-                (d) =>
-                    d.predictedRisk === "HIGH"
-            ).length,
-        },
+        { name: "MEDIUM", value: normalizedDeliveries.filter((d) => d.predictedRisk === "MEDIUM").length },
+        { name: "LOW", value: normalizedDeliveries.filter((d) => d.predictedRisk === "LOW").length },
+        { name: "HIGH", value: normalizedDeliveries.filter((d) => d.predictedRisk === "HIGH").length },
     ];
 
     // =====================================================
@@ -95,11 +75,7 @@ export default function RiskPieChart({
                 </h2>
 
                 <div className="mt-8 flex h-[320px] items-center justify-center rounded-3xl border border-dashed border-slate-200 bg-slate-50">
-
-                    <p className="text-slate-500">
-                        No risk distribution data available
-                    </p>
-
+                    <p className="text-slate-500">No risk distribution data available</p>
                 </div>
 
             </div>
@@ -122,43 +98,18 @@ export default function RiskPieChart({
 
             <div className="mt-8 h-[320px] w-full min-w-0">
 
-                <ResponsiveContainer
-                    width="100%"
-                    height="100%"
-                    minWidth={0}
-                >
-
+                <ResponsiveContainer width="100%" height="100%" minWidth={0}>
                     <PieChart>
-
-                        <Pie
-                            data={data}
-                            dataKey="value"
-                            nameKey="name"
-                            cx="50%"
-                            cy="50%"
-                            outerRadius={120}
-                            innerRadius={70}
-                            paddingAngle={3}
-                            label
-                        >
-
+                        <Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={110} innerRadius={68} paddingAngle={4} label={({ name, percent }) => `${name} ${Math.round(percent * 100)}%`}>
                             {data.map((entry, index) => (
-
-                                <Cell
-                                    key={`cell-${index}`}
-                                    fill={COLORS[index]}
-                                />
-
+                                <Cell key={`cell-${index}`} fill={COLORS[index]} />
                             ))}
-
                         </Pie>
 
-                        <Tooltip />
+                        <Tooltip formatter={(value) => `${value} deliveries`} />
 
-                        <Legend />
-
+                        <Legend verticalAlign="bottom" height={36} formatter={(value) => value.charAt(0) + value.slice(1).toLowerCase()} />
                     </PieChart>
-
                 </ResponsiveContainer>
 
             </div>
