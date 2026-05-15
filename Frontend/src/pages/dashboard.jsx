@@ -502,11 +502,6 @@ export default function Dashboard() {
                                 <label className="block text-xs text-slate-300">Order Hour</label>
                                 <input name="Order_Hour" type="number" value={formData.Order_Hour} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black" />
                             </div>
-
-                            <div>
-                                <label className="block text-xs text-slate-300">Order Hour</label>
-                                <input name="Order_Hour" type="number" value={formData.Order_Hour} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black" />
-                            </div>
                         </div>
                     </section>
 
