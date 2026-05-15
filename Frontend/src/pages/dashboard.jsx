@@ -392,7 +392,16 @@ export default function Dashboard() {
 
                             <div>
                                 <label className="block text-xs text-slate-300">Agent Rating</label>
-                                <input name="Agent_Rating" type="number" step="0.1" value={formData.Agent_Rating} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black" />
+                                <select name="Agent_Rating" value={formData.Agent_Rating} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black">
+                                    {[...Array(41)].map((_, index) => {
+                                        const value = (1 + index * 0.1).toFixed(1);
+                                        return (
+                                            <option key={value} value={value}>
+                                                {value}
+                                            </option>
+                                        );
+                                    })}
+                                </select>
                             </div>
 
                             <div>
@@ -413,22 +422,39 @@ export default function Dashboard() {
                                     <option>Low</option>
                                     <option>Medium</option>
                                     <option>High</option>
+                                    <option>Jam</option>
                                 </select>
                             </div>
 
                             <div>
                                 <label className="block text-xs text-slate-300">Vehicle</label>
-                                <input name="Vehicle" value={formData.Vehicle} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black" />
+                                <select name="Vehicle" value={formData.Vehicle} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black">
+                                    <option value="motorcycle">Motorcycle</option>
+                                    <option value="car">Car</option>
+                                    <option value="van">Van</option>
+                                    <option value="truck">Truck</option>
+                                    <option value="bicycle">Bicycle</option>
+                                </select>
                             </div>
 
                             <div>
                                 <label className="block text-xs text-slate-300">Category</label>
-                                <input name="Category" value={formData.Category} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black" />
+                                <select name="Category" value={formData.Category} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black">
+                                    <option value="Clothing">Clothing</option>
+                                    <option value="Electronics">Electronics</option>
+                                    <option value="Food">Food</option>
+                                    <option value="Pharmacy">Pharmacy</option>
+                                    <option value="Home">Home</option>
+                                </select>
                             </div>
 
                             <div>
                                 <label className="block text-xs text-slate-300">Area</label>
-                                <input name="Area" value={formData.Area} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black" />
+                                <select name="Area" value={formData.Area} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black">
+                                    <option value="Urban">Urban</option>
+                                    <option value="Suburban">Suburban</option>
+                                    <option value="Rural">Rural</option>
+                                </select>
                             </div>
 
                             <div>
@@ -447,6 +473,11 @@ export default function Dashboard() {
                                     <option value={0}>No</option>
                                     <option value={1}>Yes</option>
                                 </select>
+                            </div>
+
+                            <div>
+                                <label className="block text-xs text-slate-300">Order Hour</label>
+                                <input name="Order_Hour" type="number" value={formData.Order_Hour} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black" />
                             </div>
 
                             <div>
@@ -722,6 +753,37 @@ export default function Dashboard() {
 
                         </div>
 
+                    )}
+
+                    {recommendations?.length > 0 && (
+                        <div className="rounded-[36px] border border-slate-200 bg-white p-8 shadow-xl">
+                            <h2 className="text-3xl font-black text-slate-900">
+                                Smart Recommendations
+                            </h2>
+                            <ul className="mt-6 space-y-3 text-slate-700">
+                                {recommendations.map((item, index) => (
+                                    <li key={index} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                                        {item}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
+                    {mainCauses?.length > 0 && (
+                        <div className="rounded-[36px] border border-slate-200 bg-white p-8 shadow-xl">
+                            <h2 className="text-3xl font-black text-slate-900">
+                                Root Cause Analysis
+                            </h2>
+                            <div className="mt-6 space-y-3 text-slate-700">
+                                {mainCauses.map((cause, index) => (
+                                    <div key={index} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                                        <p className="font-semibold">Cause {index + 1}</p>
+                                        <p className="mt-2 text-sm">{cause}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     )}
 
                     <AlertCenter deliveries={deliveries} />
