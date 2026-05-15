@@ -3,19 +3,13 @@ package com.deliverai.deliverai_backend.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import org.springframework.http.HttpMethod;
-
 import org.springframework.security.config.Customizer;
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.config.http.SessionCreationPolicy;
 
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -24,44 +18,34 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
     public SecurityFilterChain filterChain(
             HttpSecurity http
     ) throws Exception {
 
         http
 
+                // Disable CSRF completely
+                .csrf(csrf -> csrf.disable())
+
                 // Enable CORS
                 .cors(Customizer.withDefaults())
 
-                // Disable CSRF
-                .csrf(AbstractHttpConfigurer::disable)
+                // Disable login forms
+                .formLogin(form -> form.disable())
 
-                // Authorization
-                .authorizeHttpRequests(auth -> auth
+                // Disable HTTP Basic auth
+                .httpBasic(basic -> basic.disable())
 
-                        // Allow preflight requests
-                        .requestMatchers(
-                                HttpMethod.OPTIONS,
-                                "/**"
-                        ).permitAll()
+                // No sessions
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(
+                                SessionCreationPolicy.STATELESS
+                        )
+                )
 
-                        // Public APIs
-                        .requestMatchers("/api/**")
-                        .permitAll()
-
-                        // WebSocket
-                        .requestMatchers("/ws/**")
-                        .permitAll()
-
-                        // EVERYTHING ALLOWED
-                        .anyRequest()
-                        .permitAll()
+                // ALLOW EVERYTHING
+                .authorizeHttpRequests(auth ->
+                        auth.anyRequest().permitAll()
                 );
 
         return http.build();
