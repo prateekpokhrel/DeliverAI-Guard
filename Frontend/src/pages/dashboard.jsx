@@ -43,6 +43,7 @@ const getWeatherIcon = (weather) => {
         case "Sunny":
             return <Sun size={20} className="text-yellow-500" />;
         case "Rainy":
+        case "Stormy":
             return <CloudRain size={20} className="text-blue-500" />;
         case "Fog":
             return <CloudFog size={20} className="text-slate-500" />;
@@ -94,9 +95,21 @@ export default function Dashboard() {
     // =====================================================
 
     const handleChange = (e) => {
+        const { name, value } = e.target;
+        const numericKeys = [
+            "Agent_Age",
+            "Agent_Rating",
+            "Distance_km",
+            "Pickup_Delay_Minutes",
+            "Rush_Hour",
+            "Order_Hour",
+        ];
+
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value,
+            [name]: numericKeys.includes(name)
+                ? Number(value)
+                : value,
         });
     };
 
@@ -393,8 +406,8 @@ export default function Dashboard() {
                             <div>
                                 <label className="block text-xs text-slate-300">Agent Rating</label>
                                 <select name="Agent_Rating" value={formData.Agent_Rating} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black">
-                                    {[...Array(41)].map((_, index) => {
-                                        const value = (1 + index * 0.1).toFixed(1);
+                                    {[...Array(26)].map((_, index) => {
+                                        const value = (2.5 + index * 0.1).toFixed(1);
                                         return (
                                             <option key={value} value={value}>
                                                 {value}
@@ -407,53 +420,63 @@ export default function Dashboard() {
                             <div>
                                 <label className="block text-xs text-slate-300">Weather</label>
                                 <select name="Weather" value={formData.Weather} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black">
-                                    <option>Sunny</option>
-                                    <option>Rainy</option>
+                                    <option>Cloudy</option>
                                     <option>Fog</option>
                                     <option>Sandstorms</option>
+                                    <option>Stormy</option>
+                                    <option>Sunny</option>
                                     <option>Windy</option>
-                                    <option>Cloudy</option>
                                 </select>
                             </div>
 
                             <div>
                                 <label className="block text-xs text-slate-300">Traffic</label>
                                 <select name="Traffic" value={formData.Traffic} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black">
-                                    <option>Low</option>
-                                    <option>Medium</option>
                                     <option>High</option>
                                     <option>Jam</option>
+                                    <option>Low</option>
+                                    <option>Medium</option>
                                 </select>
                             </div>
 
                             <div>
                                 <label className="block text-xs text-slate-300">Vehicle</label>
                                 <select name="Vehicle" value={formData.Vehicle} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black">
-                                    <option value="motorcycle">Motorcycle</option>
-                                    <option value="car">Car</option>
-                                    <option value="van">Van</option>
-                                    <option value="truck">Truck</option>
-                                    <option value="bicycle">Bicycle</option>
+                                    <option value="motorcycle">motorcycle</option>
+                                    <option value="scooter">scooter</option>
+                                    <option value="van">van</option>
                                 </select>
                             </div>
 
                             <div>
                                 <label className="block text-xs text-slate-300">Category</label>
                                 <select name="Category" value={formData.Category} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black">
+                                    <option value="Apparel">Apparel</option>
+                                    <option value="Books">Books</option>
                                     <option value="Clothing">Clothing</option>
+                                    <option value="Cosmetics">Cosmetics</option>
                                     <option value="Electronics">Electronics</option>
-                                    <option value="Food">Food</option>
-                                    <option value="Pharmacy">Pharmacy</option>
+                                    <option value="Grocery">Grocery</option>
                                     <option value="Home">Home</option>
+                                    <option value="Jewelry">Jewelry</option>
+                                    <option value="Kitchen">Kitchen</option>
+                                    <option value="Outdoors">Outdoors</option>
+                                    <option value="Pet Supplies">Pet Supplies</option>
+                                    <option value="Shoes">Shoes</option>
+                                    <option value="Skincare">Skincare</option>
+                                    <option value="Snacks">Snacks</option>
+                                    <option value="Sports">Sports</option>
+                                    <option value="Toys">Toys</option>
                                 </select>
                             </div>
 
                             <div>
                                 <label className="block text-xs text-slate-300">Area</label>
                                 <select name="Area" value={formData.Area} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black">
+                                    <option value="Metropolitian">Metropolitian</option>
+                                    <option value="Other">Other</option>
+                                    <option value="Semi-Urban">Semi-Urban</option>
                                     <option value="Urban">Urban</option>
-                                    <option value="Suburban">Suburban</option>
-                                    <option value="Rural">Rural</option>
                                 </select>
                             </div>
 
