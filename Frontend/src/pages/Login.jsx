@@ -48,9 +48,18 @@ export default function Auth() {
     /* GOOGLE AUTH */
     /* ========================= */
     const handleGoogleAuth = () => {
-        // Replace this with your actual Google OAuth endpoint or Firebase trigger
-        toast("Redirecting to Google...", { icon: '🔄' });
-        // Example: window.location.href = `${API_BASE_URL}/api/auth/google`;
+        toast.loading("Redirecting to Google...", {
+            style: {
+                borderRadius: '12px',
+                background: '#1e293b',
+                color: '#fff',
+                fontSize: '14px',
+                fontWeight: '500'
+            },
+        });
+
+        // Actual redirect to your backend OAuth route
+        window.location.href = `${API_BASE_URL}/api/auth/google`;
     };
 
     /* ========================= */
@@ -65,7 +74,7 @@ export default function Auth() {
             const endpoint = isLogin ? "/api/auth/login" : "/api/auth/register";
             const payload = isLogin 
                 ? { email: formData.email, password: formData.password } 
-                : formData; // Sends name, email, password, contact, and address
+                : formData;
 
             const response = await axios.post(`${API_BASE_URL}${endpoint}`, payload);
 
@@ -90,8 +99,7 @@ export default function Auth() {
     return (
         <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 via-indigo-50/50 to-slate-200 py-10 px-4 dark:from-slate-950 dark:via-indigo-950/20 dark:to-slate-900">
             
-            {/* Main Card - Added max height and hidden scrollbar so it stays neat on small screens */}
-            <div className="w-full max-w-lg rounded-[2.5rem] border border-white/50 bg-white/80 p-8 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] backdrop-blur-xl sm:p-12 dark:border-slate-800 dark:bg-slate-900/90 dark:shadow-2xl [&::-webkit-scrollbar]:hidden max-h-[95vh] overflow-y-auto">
+            <div className="w-full max-w-lg overflow-y-auto rounded-[2.5rem] border border-white/50 bg-white/80 p-8 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] backdrop-blur-xl max-h-[95vh] sm:p-12 dark:border-slate-800 dark:bg-slate-900/90 dark:shadow-2xl [&::-webkit-scrollbar]:hidden">
                 
                 {/* HEADER */}
                 <div className="text-center">
@@ -199,7 +207,7 @@ export default function Auth() {
                                 Password
                             </label>
                             {isLogin && (
-                                <a href="#" className="text-xs font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
+                                <a href="#" className="text-xs font-medium text-indigo-600 transition-colors hover:text-indigo-500 dark:text-indigo-400">
                                     Forgot password?
                                 </a>
                             )}
@@ -239,7 +247,7 @@ export default function Auth() {
                 </form>
 
                 {/* DIVIDER */}
-                <div className="relative mt-8 mb-6">
+                <div className="relative mb-6 mt-8">
                     <div className="absolute inset-0 flex items-center">
                         <div className="w-full border-t border-slate-200 dark:border-slate-700"></div>
                     </div>
