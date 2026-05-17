@@ -41,16 +41,16 @@ import {
 const getWeatherIcon = (weather) => {
     switch (weather) {
         case "Sunny":
-            return <Sun size={20} className="text-yellow-500" />;
+            return <Sun size={20} className="text-amber-500" />;
         case "Rainy":
         case "Stormy":
             return <CloudRain size={20} className="text-blue-500" />;
         case "Fog":
             return <CloudFog size={20} className="text-slate-500" />;
         case "Sandstorms":
-            return <Wind size={20} className="text-orange-400" />;
+            return <Wind size={20} className="text-yellow-600" />;
         case "Windy":
-            return <Wind size={20} className="text-cyan-500" />;
+            return <Wind size={20} className="text-cyan-600" />;
         case "Cloudy":
         default:
             return <Cloud size={20} className="text-slate-400" />;
@@ -58,7 +58,6 @@ const getWeatherIcon = (weather) => {
 };
 
 export default function Dashboard() {
-
     // =====================================================
     // STATES
     // =====================================================
@@ -119,7 +118,6 @@ export default function Dashboard() {
 
     const fetchDeliveries = async () => {
         try {
-
             const response = await axios.get(
                 `${API_BASE_URL}/api/monitoring/all`
             );
@@ -173,16 +171,13 @@ export default function Dashboard() {
             setTimeout(() => {
                 setPageLoading(false);
             }, 800);
-
         } catch (error) {
-
             console.log(
                 "Failed to fetch deliveries:",
                 error
             );
 
             setDeliveries([]);
-
             setPageLoading(false);
         }
     };
@@ -192,11 +187,9 @@ export default function Dashboard() {
     // =====================================================
 
     useEffect(() => {
-
         fetchDeliveries();
 
         connectWebSocket((newDelivery) => {
-
             const normalizedDelivery = {
                 category:
                     newDelivery.category ||
@@ -230,7 +223,6 @@ export default function Dashboard() {
             };
 
             setDeliveries((prev) => {
-
                 const safePrev = Array.isArray(prev)
                     ? prev
                     : [];
@@ -242,14 +234,20 @@ export default function Dashboard() {
             });
 
             toast.success(
-                "New live prediction received"
+                "New live prediction received",
+                {
+                    style: {
+                        borderRadius: '12px',
+                        background: '#333',
+                        color: '#fff',
+                    },
+                }
             );
         });
 
         return () => {
             disconnectWebSocket();
         };
-
     }, []);
 
     // =====================================================
@@ -257,9 +255,7 @@ export default function Dashboard() {
     // =====================================================
 
     const predictRisk = async () => {
-
         try {
-
             setLoading(true);
 
             toast.loading(
@@ -303,18 +299,14 @@ export default function Dashboard() {
                 "Prediction completed",
                 { id: "prediction" }
             );
-
         } catch (error) {
-
             console.log(error);
 
             toast.error(
                 "Prediction failed",
                 { id: "prediction" }
             );
-
         } finally {
-
             setLoading(false);
         }
     };
@@ -347,58 +339,56 @@ export default function Dashboard() {
     // =====================================================
 
     return (
-
-        <div className="space-y-8">
-
+        <div className="space-y-8 max-w-[1600px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
             {/* HERO SECTION */}
-
             <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="relative overflow-hidden rounded-[40px] bg-gradient-to-br from-[#020617] via-[#081225] to-[#111827] p-10 text-white shadow-2xl"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 p-6 sm:p-10 lg:p-12 text-white shadow-[0_20px_50px_rgba(8,_112,_184,_0.1)]"
             >
-
-                <div className="absolute right-0 top-0 h-96 w-96 rounded-full bg-orange-500/20 blur-3xl"></div>
+                <div className="absolute -right-20 -top-20 h-96 w-96 rounded-full bg-indigo-500/20 blur-[100px] pointer-events-none"></div>
+                <div className="absolute -left-20 -bottom-20 h-96 w-96 rounded-full bg-blue-500/10 blur-[100px] pointer-events-none"></div>
 
                 <div className="relative z-10">
-
-                    <div className="flex items-center gap-3 text-orange-400">
-
-                        <Sparkles size={22} />
-
-                        <p className="text-sm font-semibold uppercase tracking-[0.3em]">
+                    <div className="flex items-center gap-3 text-indigo-400">
+                        <Sparkles size={22} aria-hidden="true" />
+                        <p className="text-xs sm:text-sm font-bold uppercase tracking-[0.25em]">
                             AI Operations Center
                         </p>
-
                     </div>
 
-                    <h1 className="mt-8 max-w-4xl text-6xl font-black leading-tight">
+                    <h1 className="mt-6 max-w-4xl text-4xl sm:text-5xl lg:text-6xl font-black leading-tight tracking-tight">
                         Prevent Delivery Failures Before They Happen
                     </h1>
 
-                    <p className="mt-6 max-w-3xl text-lg leading-relaxed text-slate-300">
+                    <p className="mt-6 max-w-2xl text-base sm:text-lg leading-relaxed text-slate-300 font-medium">
                         Unified ecommerce delivery intelligence system powered by AI risk analysis,
                         logistics monitoring, traffic analysis, and smart prevention recommendations.
                     </p>
 
-                    <section className="mt-6 rounded-[20px] bg-gradient-to-br from-[#071024] to-[#0b1624] p-5 text-white shadow-lg border border-slate-800">
-                        <div className="flex items-center justify-between">
+                    <section className="mt-10 rounded-[2rem] border border-slate-700/50 bg-slate-900/60 backdrop-blur-xl p-6 sm:p-8 shadow-2xl">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-700/50 pb-5 mb-6">
                             <div className="flex items-center gap-3">
-                                <Zap size={18} className="text-orange-400" />
-                                <h3 className="text-lg font-semibold">AI Parameters</h3>
-                                <span className="text-sm text-slate-400">Edit inputs before running prediction</span>
+                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-500/20 text-indigo-400">
+                                    <Zap size={20} aria-hidden="true" />
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold text-white">AI Parameters</h3>
+                                    <p className="text-sm text-slate-400 mt-0.5">Adjust variables to run custom predictions</p>
+                                </div>
                             </div>
                         </div>
 
-                        <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                            <div>
-                                <label className="block text-xs text-slate-300">Agent Age</label>
-                                <input name="Agent_Age" type="number" value={formData.Agent_Age} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black" />
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                            <div className="space-y-1.5">
+                                <label htmlFor="Agent_Age" className="block text-sm font-medium text-slate-300">Agent Age</label>
+                                <input id="Agent_Age" name="Agent_Age" type="number" min="18" max="100" value={formData.Agent_Age} onChange={handleChange} className="w-full rounded-xl border border-slate-600 bg-slate-800/80 px-4 py-3 text-slate-100 placeholder-slate-400 transition-all focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40" />
                             </div>
 
-                            <div>
-                                <label className="block text-xs text-slate-300">Agent Rating</label>
-                                <select name="Agent_Rating" value={formData.Agent_Rating} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black">
+                            <div className="space-y-1.5">
+                                <label htmlFor="Agent_Rating" className="block text-sm font-medium text-slate-300">Agent Rating</label>
+                                <select id="Agent_Rating" name="Agent_Rating" value={formData.Agent_Rating} onChange={handleChange} className="w-full rounded-xl border border-slate-600 bg-slate-800/80 px-4 py-3 text-slate-100 transition-all focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 appearance-none">
                                     {[...Array(26)].map((_, index) => {
                                         const value = (2.5 + index * 0.1).toFixed(1);
                                         return (
@@ -410,40 +400,40 @@ export default function Dashboard() {
                                 </select>
                             </div>
 
-                            <div>
-                                <label className="block text-xs text-slate-300">Weather</label>
-                                <select name="Weather" value={formData.Weather} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black">
-                                    <option>Cloudy</option>
-                                    <option>Fog</option>
-                                    <option>Sandstorms</option>
-                                    <option>Stormy</option>
-                                    <option>Sunny</option>
-                                    <option>Windy</option>
+                            <div className="space-y-1.5">
+                                <label htmlFor="Weather" className="block text-sm font-medium text-slate-300">Weather</label>
+                                <select id="Weather" name="Weather" value={formData.Weather} onChange={handleChange} className="w-full rounded-xl border border-slate-600 bg-slate-800/80 px-4 py-3 text-slate-100 transition-all focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 appearance-none">
+                                    <option value="Cloudy">Cloudy</option>
+                                    <option value="Fog">Fog</option>
+                                    <option value="Sandstorms">Sandstorms</option>
+                                    <option value="Stormy">Stormy</option>
+                                    <option value="Sunny">Sunny</option>
+                                    <option value="Windy">Windy</option>
                                 </select>
                             </div>
 
-                            <div>
-                                <label className="block text-xs text-slate-300">Traffic</label>
-                                <select name="Traffic" value={formData.Traffic} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black">
-                                    <option>High</option>
-                                    <option>Jam</option>
-                                    <option>Low</option>
-                                    <option>Medium</option>
+                            <div className="space-y-1.5">
+                                <label htmlFor="Traffic" className="block text-sm font-medium text-slate-300">Traffic</label>
+                                <select id="Traffic" name="Traffic" value={formData.Traffic} onChange={handleChange} className="w-full rounded-xl border border-slate-600 bg-slate-800/80 px-4 py-3 text-slate-100 transition-all focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 appearance-none">
+                                    <option value="High">High</option>
+                                    <option value="Jam">Jam</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Medium">Medium</option>
                                 </select>
                             </div>
 
-                            <div>
-                                <label className="block text-xs text-slate-300">Vehicle</label>
-                                <select name="Vehicle" value={formData.Vehicle} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black">
-                                    <option value="motorcycle">motorcycle</option>
-                                    <option value="scooter">scooter</option>
-                                    <option value="van">van</option>
+                            <div className="space-y-1.5">
+                                <label htmlFor="Vehicle" className="block text-sm font-medium text-slate-300">Vehicle</label>
+                                <select id="Vehicle" name="Vehicle" value={formData.Vehicle} onChange={handleChange} className="w-full rounded-xl border border-slate-600 bg-slate-800/80 px-4 py-3 text-slate-100 transition-all focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 appearance-none">
+                                    <option value="motorcycle">Motorcycle</option>
+                                    <option value="scooter">Scooter</option>
+                                    <option value="van">Van</option>
                                 </select>
                             </div>
 
-                            <div>
-                                <label className="block text-xs text-slate-300">Category</label>
-                                <select name="Category" value={formData.Category} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black">
+                            <div className="space-y-1.5">
+                                <label htmlFor="Category" className="block text-sm font-medium text-slate-300">Category</label>
+                                <select id="Category" name="Category" value={formData.Category} onChange={handleChange} className="w-full rounded-xl border border-slate-600 bg-slate-800/80 px-4 py-3 text-slate-100 transition-all focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 appearance-none">
                                     <option value="Apparel">Apparel</option>
                                     <option value="Books">Books</option>
                                     <option value="Clothing">Clothing</option>
@@ -463,9 +453,9 @@ export default function Dashboard() {
                                 </select>
                             </div>
 
-                            <div>
-                                <label className="block text-xs text-slate-300">Area</label>
-                                <select name="Area" value={formData.Area} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black">
+                            <div className="space-y-1.5">
+                                <label htmlFor="Area" className="block text-sm font-medium text-slate-300">Area</label>
+                                <select id="Area" name="Area" value={formData.Area} onChange={handleChange} className="w-full rounded-xl border border-slate-600 bg-slate-800/80 px-4 py-3 text-slate-100 transition-all focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 appearance-none">
                                     <option value="Metropolitian">Metropolitian</option>
                                     <option value="Other">Other</option>
                                     <option value="Semi-Urban">Semi-Urban</option>
@@ -473,62 +463,54 @@ export default function Dashboard() {
                                 </select>
                             </div>
 
-                            <div>
-                                <label className="block text-xs text-slate-300">Distance (km)</label>
-                                <input name="Distance_km" type="number" step="0.1" value={formData.Distance_km} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black" />
+                            <div className="space-y-1.5">
+                                <label htmlFor="Distance_km" className="block text-sm font-medium text-slate-300">Distance (km)</label>
+                                <input id="Distance_km" name="Distance_km" type="number" step="0.1" min="0" value={formData.Distance_km} onChange={handleChange} className="w-full rounded-xl border border-slate-600 bg-slate-800/80 px-4 py-3 text-slate-100 placeholder-slate-400 transition-all focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40" />
                             </div>
 
-                            <div>
-                                <label className="block text-xs text-slate-300">Pickup Delay (mins)</label>
-                                <input name="Pickup_Delay_Minutes" type="number" value={formData.Pickup_Delay_Minutes} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black" />
+                            <div className="space-y-1.5">
+                                <label htmlFor="Pickup_Delay_Minutes" className="block text-sm font-medium text-slate-300">Pickup Delay (mins)</label>
+                                <input id="Pickup_Delay_Minutes" name="Pickup_Delay_Minutes" type="number" min="0" value={formData.Pickup_Delay_Minutes} onChange={handleChange} className="w-full rounded-xl border border-slate-600 bg-slate-800/80 px-4 py-3 text-slate-100 placeholder-slate-400 transition-all focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40" />
                             </div>
 
-                            <div>
-                                <label className="block text-xs text-slate-300">Rush Hour</label>
-                                <select name="Rush_Hour" value={formData.Rush_Hour} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black">
+                            <div className="space-y-1.5">
+                                <label htmlFor="Rush_Hour" className="block text-sm font-medium text-slate-300">Rush Hour</label>
+                                <select id="Rush_Hour" name="Rush_Hour" value={formData.Rush_Hour} onChange={handleChange} className="w-full rounded-xl border border-slate-600 bg-slate-800/80 px-4 py-3 text-slate-100 transition-all focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 appearance-none">
                                     <option value={0}>No</option>
                                     <option value={1}>Yes</option>
                                 </select>
                             </div>
 
-                            <div>
-                                <label className="block text-xs text-slate-300">Order Hour</label>
-                                <input name="Order_Hour" type="number" value={formData.Order_Hour} onChange={handleChange} className="mt-1 w-full rounded-md p-2 bg-white text-black" />
+                            <div className="space-y-1.5">
+                                <label htmlFor="Order_Hour" className="block text-sm font-medium text-slate-300">Order Hour (0-23)</label>
+                                <input id="Order_Hour" name="Order_Hour" type="number" min="0" max="23" value={formData.Order_Hour} onChange={handleChange} className="w-full rounded-xl border border-slate-600 bg-slate-800/80 px-4 py-3 text-slate-100 placeholder-slate-400 transition-all focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40" />
                             </div>
                         </div>
+
+                        <button
+                            onClick={predictRisk}
+                            disabled={loading}
+                            aria-busy={loading}
+                            className="mt-8 w-full sm:w-auto flex items-center justify-center gap-3 rounded-xl bg-indigo-600 px-8 py-4 text-base font-bold text-white shadow-lg shadow-indigo-600/30 transition-all hover:bg-indigo-500 hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-indigo-500/50 disabled:pointer-events-none disabled:opacity-70"
+                        >
+                            {loading ? (
+                                <>
+                                    <Loader2 className="animate-spin" size={20} aria-hidden="true" />
+                                    <span>Processing AI...</span>
+                                </>
+                            ) : (
+                                <>
+                                    <Zap size={20} aria-hidden="true" />
+                                    <span>Launch AI Prediction</span>
+                                </>
+                            )}
+                        </button>
                     </section>
-
-                    <button
-                        onClick={predictRisk}
-                        disabled={loading}
-                        className="mt-10 flex items-center gap-3 rounded-2xl bg-orange-500 px-8 py-4 font-semibold shadow-2xl transition hover:scale-[1.02] hover:bg-orange-600 disabled:opacity-70 disabled:hover:scale-100"
-                    >
-
-                        {loading ? (
-                            <>
-                                <Loader2
-                                    className="animate-spin"
-                                    size={20}
-                                />
-                                Processing AI...
-                            </>
-                        ) : (
-                            <>
-                                <Zap size={20} />
-                                Launch AI Prediction
-                            </>
-                        )}
-
-                    </button>
-
                 </div>
-
             </motion.div>
 
             {/* KPI CARDS */}
-
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
-
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
                 <KPIStatCard
                     title="Total Deliveries"
                     value={
@@ -537,7 +519,7 @@ export default function Dashboard() {
                             : 0
                     }
                     icon={<Truck size={28} />}
-                    color="text-blue-500"
+                    color="text-indigo-600"
                 />
 
                 <KPIStatCard
@@ -551,29 +533,26 @@ export default function Dashboard() {
                             : 0
                     }
                     icon={<AlertTriangle size={28} />}
-                    color="text-red-500"
+                    color="text-rose-600"
                 />
 
                 <KPIStatCard
                     title="AI Accuracy"
                     value={96}
                     icon={<ShieldCheck size={28} />}
-                    color="text-green-500"
+                    color="text-emerald-600"
                 />
 
                 <KPIStatCard
                     title="AI Status"
                     value="LIVE"
                     icon={<BrainCircuit size={28} />}
-                    color="text-orange-500"
+                    color="text-blue-600"
                 />
-
             </div>
 
             {/* CHARTS */}
-
             <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-
                 <RiskPieChart
                     deliveries={
                         Array.isArray(deliveries)
@@ -581,7 +560,6 @@ export default function Dashboard() {
                             : []
                     }
                 />
-
                 <DeliveryTrendChart
                     deliveries={
                         Array.isArray(deliveries)
@@ -589,191 +567,132 @@ export default function Dashboard() {
                             : []
                     }
                 />
-
             </div>
 
             {/* MAIN CONTENT GRID */}
-
-            <div className="grid grid-cols-1 gap-6 2xl:grid-cols-3">
-
+            <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
                 {/* LEFT COLUMN */}
-
-                <div className="space-y-6 2xl:col-span-2">
-
+                <div className="space-y-6 xl:col-span-2">
                     {/* LIVE DELIVERY MONITORING */}
-
-                    <div className="rounded-[36px] bg-white p-8 shadow-xl">
-
-                        <div className="flex flex-col gap-6 md:flex-row md:items-start justify-between">
-
+                    <div className="rounded-[2.5rem] bg-white border border-slate-100 p-6 sm:p-8 lg:p-10 shadow-xl shadow-slate-200/40">
+                        <div className="flex flex-col gap-6 md:flex-row md:items-center justify-between">
                             <div>
-
-                                <h2 className="text-4xl font-black text-slate-900">
+                                <h2 className="text-3xl font-black text-slate-900 tracking-tight">
                                     Live AI Monitoring
                                 </h2>
-
-                                <p className="mt-2 text-slate-500">
+                                <p className="mt-2 text-base text-slate-500 font-medium">
                                     Real-time ecommerce delivery intelligence.
                                 </p>
-
                             </div>
 
                             <div className="flex items-center gap-4 w-full md:w-auto">
-
-                                <div className="relative w-full md:w-64">
-
+                                <div className="relative w-full md:w-72">
+                                    <label htmlFor="search-deliveries" className="sr-only">Search category</label>
                                     <Search
                                         className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-                                        size={18}
+                                        size={20}
+                                        aria-hidden="true"
                                     />
-
                                     <input
+                                        id="search-deliveries"
                                         type="text"
                                         placeholder="Search category..."
                                         value={liveSearch}
-                                        onChange={(e) =>
-                                            setLiveSearch(
-                                                e.target.value
-                                            )
-                                        }
-                                        className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 outline-none transition-all focus:border-blue-400 focus:ring-4 focus:ring-blue-100"
+                                        onChange={(e) => setLiveSearch(e.target.value)}
+                                        className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-12 pr-4 text-slate-900 transition-all placeholder:text-slate-400 focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-indigo-500/10"
                                     />
-
                                 </div>
-
-                                <div className="hidden md:flex rounded-2xl bg-blue-100 p-4 text-blue-500">
-
-                                    <Activity size={30} />
-
+                                <div className="hidden md:flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600 shadow-sm border border-indigo-100 flex-shrink-0">
+                                    <Activity size={24} aria-hidden="true" />
                                 </div>
-
                             </div>
-
                         </div>
 
-                        <div className="mt-8 grid gap-5">
-
+                        <div className="mt-8 flex flex-col gap-5">
                             {filteredLiveDeliveries.length > 0 ? (
-
                                 filteredLiveDeliveries
                                     .slice(0, 5)
                                     .map((delivery, index) => (
-
                                         <DeliveryCard
                                             key={index}
                                             delivery={delivery}
                                         />
-
                                     ))
-
                             ) : (
-
-                                <div className="flex flex-col items-center justify-center py-10 text-slate-400">
-
-                                    <Search
-                                        size={40}
-                                        className="mb-4 opacity-50"
-                                    />
-
-                                    <p>
+                                <div className="flex flex-col items-center justify-center py-16 text-slate-400 rounded-3xl border-2 border-dashed border-slate-100 bg-slate-50/50">
+                                    <Search size={48} className="mb-4 text-slate-300" aria-hidden="true" />
+                                    <p className="text-lg font-medium text-slate-500">
                                         No active deliveries found matching "{liveSearch}"
                                     </p>
-
                                 </div>
-
                             )}
-
                         </div>
-
                     </div>
-
                 </div>
 
                 {/* RIGHT COLUMN */}
-
                 <div className="space-y-6">
-
-                    {/* PREDICTION */}
-
-                    <div className="rounded-[36px] bg-gradient-to-br from-orange-400 via-orange-500 to-amber-500 p-8 text-white shadow-2xl">
-
-                        <p className="text-sm font-semibold uppercase tracking-[0.25em] text-orange-100">
-                            Live AI Prediction
-                        </p>
-
-                        <h1 className="mt-8 text-7xl font-black">
+                    {/* PREDICTION RESULT CARD */}
+                    <div className="rounded-[2.5rem] bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-800 p-8 sm:p-10 text-white shadow-xl shadow-indigo-600/20">
+                        <div className="flex items-center justify-between">
+                            <p className="text-sm font-bold uppercase tracking-[0.2em] text-indigo-200">
+                                Live Prediction
+                            </p>
+                            <Radar size={24} className="text-indigo-300 opacity-70" aria-hidden="true" />
+                        </div>
+                        <h2 className="mt-8 text-5xl sm:text-6xl font-black tracking-tight" aria-live="polite">
                             {prediction}
-                        </h1>
-
+                        </h2>
                     </div>
 
                     {/* EXPLAINABILITY */}
-
                     {explainability && (
-
-                        <div className="rounded-[36px] border border-slate-200 bg-white p-8 shadow-xl">
-
-                            <h2 className="text-3xl font-black text-slate-900">
+                        <div className="rounded-[2.5rem] border border-slate-100 bg-white p-6 sm:p-8 shadow-xl shadow-slate-200/40">
+                            <h2 className="text-2xl font-black text-slate-900 tracking-tight">
                                 AI Explainability
                             </h2>
-
                             <div className="mt-6 space-y-4">
-
                                 {Object.entries(explainability).map(
                                     ([key, value]) => (
-
                                         <div
                                             key={key}
-                                            className="rounded-2xl bg-slate-50 p-4"
+                                            className="rounded-2xl border border-slate-100 bg-slate-50 p-4 transition-colors hover:border-slate-200 hover:bg-slate-100/50"
                                         >
-
                                             <div className="flex items-center justify-between">
-
-                                                <span className="font-semibold text-slate-700">
+                                                <span className="font-bold text-slate-700">
                                                     {key.replace(/_/g, " ")}
                                                 </span>
-
-                                                <span className="font-bold text-orange-500">
+                                                <span className="font-bold text-indigo-600">
                                                     {(value * 100).toFixed(1)}%
                                                 </span>
-
                                             </div>
-
-                                            <div className="mt-3 h-3 overflow-hidden rounded-full bg-slate-200">
-
+                                            <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-200" role="progressbar" aria-valuenow={value * 100} aria-valuemin="0" aria-valuemax="100">
                                                 <motion.div
                                                     initial={{ width: 0 }}
-                                                    animate={{
-                                                        width: `${value * 100}%`
-                                                    }}
-                                                    transition={{
-                                                        duration: 1,
-                                                        ease: "easeOut"
-                                                    }}
-                                                    className="h-full rounded-full bg-orange-500"
+                                                    animate={{ width: `${value * 100}%` }}
+                                                    transition={{ duration: 1, ease: "easeOut" }}
+                                                    className="h-full rounded-full bg-indigo-600"
                                                 />
-
                                             </div>
-
                                         </div>
-
                                     )
                                 )}
-
                             </div>
-
                         </div>
-
                     )}
 
+                    {/* RECOMMENDATIONS */}
                     {recommendations?.length > 0 && (
-                        <div className="rounded-[36px] border border-slate-200 bg-white p-8 shadow-xl">
-                            <h2 className="text-3xl font-black text-slate-900">
+                        <div className="rounded-[2.5rem] border border-slate-100 bg-white p-6 sm:p-8 shadow-xl shadow-slate-200/40">
+                            <h2 className="text-2xl font-black text-slate-900 tracking-tight">
                                 Smart Recommendations
                             </h2>
-                            <ul className="mt-6 space-y-3 text-slate-700">
+                            <ul className="mt-6 space-y-3">
                                 {recommendations.map((item, index) => (
-                                    <li key={index} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                                    <li key={index} className="flex gap-3 rounded-2xl border border-slate-100 bg-slate-50 p-4 text-slate-700 font-medium leading-relaxed">
+                                        <span className="flex-shrink-0 mt-0.5 text-indigo-500">
+                                            <Sparkles size={18} aria-hidden="true" />
+                                        </span>
                                         {item}
                                     </li>
                                 ))}
@@ -781,16 +700,21 @@ export default function Dashboard() {
                         </div>
                     )}
 
+                    {/* ROOT CAUSE ANALYSIS */}
                     {mainCauses?.length > 0 && (
-                        <div className="rounded-[36px] border border-slate-200 bg-white p-8 shadow-xl">
-                            <h2 className="text-3xl font-black text-slate-900">
+                        <div className="rounded-[2.5rem] border border-slate-100 bg-white p-6 sm:p-8 shadow-xl shadow-slate-200/40">
+                            <h2 className="text-2xl font-black text-slate-900 tracking-tight">
                                 Root Cause Analysis
                             </h2>
-                            <div className="mt-6 space-y-3 text-slate-700">
+                            <div className="mt-6 space-y-4">
                                 {mainCauses.map((cause, index) => (
-                                    <div key={index} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                                        <p className="font-semibold">Cause {index + 1}</p>
-                                        <p className="mt-2 text-sm">{cause}</p>
+                                    <div key={index} className="rounded-2xl border border-rose-100 bg-rose-50/50 p-4">
+                                        <p className="text-xs font-bold uppercase tracking-wider text-rose-500">
+                                            Factor {index + 1}
+                                        </p>
+                                        <p className="mt-2 text-sm font-medium text-slate-800 leading-relaxed">
+                                            {cause}
+                                        </p>
                                     </div>
                                 ))}
                             </div>
@@ -798,11 +722,8 @@ export default function Dashboard() {
                     )}
 
                     <AlertCenter deliveries={deliveries} />
-
                 </div>
-
             </div>
-
         </div>
     );
 }
@@ -812,78 +733,68 @@ export default function Dashboard() {
 /* ===================================================== */
 
 function DeliveryCard({ delivery }) {
+    // Determine accessible colors based on risk
+    const getRiskStyles = (risk) => {
+        switch (risk) {
+            case "HIGH":
+                return "bg-rose-100 text-rose-700 border-rose-200";
+            case "MEDIUM":
+                return "bg-purple-100 text-purple-700 border-purple-200";
+            case "LOW":
+                return "bg-emerald-100 text-emerald-700 border-emerald-200";
+            default:
+                return "bg-slate-100 text-slate-700 border-slate-200";
+        }
+    };
 
     return (
-
-        <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5 transition-colors hover:border-blue-200 hover:bg-blue-50/50">
-
-            <div className="flex items-center justify-between">
-
+        <div className="rounded-[2rem] border border-slate-200 bg-white p-5 sm:p-6 transition-all hover:border-indigo-200 hover:shadow-lg hover:shadow-indigo-500/5">
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                 <div>
-
-                    <h2 className="text-xl font-bold text-slate-900">
+                    <h3 className="text-xl font-bold text-slate-900">
                         {delivery.category}
-                    </h2>
-
-                    <p className="mt-2 text-slate-500">
+                    </h3>
+                    <p className="mt-1 text-sm font-medium text-slate-500 flex items-center gap-1.5">
+                        <Route size={14} aria-hidden="true" />
                         {delivery.area}
                     </p>
-
                 </div>
 
                 <div
-                    className={`rounded-2xl px-5 py-2 font-bold text-white ${
-                        delivery.predictedRisk === "HIGH"
-                            ? "bg-red-500"
-                            : delivery.predictedRisk === "MEDIUM"
-                                ? "bg-orange-500"
-                                : "bg-green-500"
-                    }`}
+                    className={`inline-flex items-center justify-center rounded-xl border px-4 py-1.5 text-xs font-black tracking-wide ${getRiskStyles(delivery.predictedRisk)}`}
+                    aria-label={`Predicted Risk: ${delivery.predictedRisk}`}
                 >
-
-                    {delivery.predictedRisk}
-
+                    {delivery.predictedRisk} RISK
                 </div>
-
             </div>
 
-            <div className="mt-5 grid grid-cols-2 gap-4 text-sm text-slate-600 md:grid-cols-3">
-
+            <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3 pt-5 border-t border-slate-100">
                 <InfoItem
-                    icon={<Route size={16} />}
+                    icon={<Route size={18} />}
                     text={`${delivery.distanceKm} KM`}
                 />
-
                 <InfoItem
-                    icon={<Clock3 size={16} />}
+                    icon={<Clock3 size={18} />}
                     text={`${delivery.pickupDelayMinutes} Min Delay`}
                 />
-
                 <InfoItem
                     icon={getWeatherIcon(delivery.weather)}
                     text={delivery.weather}
                 />
-
             </div>
-
         </div>
     );
 }
 
 function InfoItem({ icon, text }) {
-
     return (
-
-        <div className="flex items-center gap-2">
-
-            <div className="text-orange-500">
+        <div className="flex items-center gap-2.5 rounded-xl bg-slate-50 p-3 border border-slate-100">
+            <div className="text-indigo-500 flex-shrink-0">
                 {icon}
             </div>
-
-            <p className="font-medium">
+            <p className="text-sm font-semibold text-slate-700 truncate">
                 {text}
             </p>
-
         </div>
     );
 }
